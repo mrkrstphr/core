@@ -11,9 +11,48 @@ use Martha\Core\Job\Trigger\TriggerAbstract;
 abstract class AbstractJob
 {
     /**
+     * @var string
+     */
+    protected $name;
+
+    /**
+     * @var string
+     */
+    protected $description;
+
+    /**
+     * @var boolean
+     */
+    protected $enabled = false;
+
+    /**
      * @var \Martha\Core\Job\Trigger\TriggerAbstract
      */
     protected $trigger;
+
+    /**
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isEnabled()
+    {
+        return $this->enabled === true;
+    }
 
     /**
      * @param TriggerAbstract $trigger
