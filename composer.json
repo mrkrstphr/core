@@ -1,0 +1,15 @@
+{
+    "name": "martha-ci/core",
+    "description": "Martha CI Core",
+    "type": "library",
+    "keywords": [],
+    "homepage": "http://github.com/martha-ci",
+    "require": {
+        "php": ">=5.4"
+    },
+    "autoload": {
+        "psr-0": {
+            "Martha\\Core": ["src/", "tests/"]
+        }
+    }
+}
