@@ -2,6 +2,7 @@
 
 namespace Martha\Core\Job;
 
+use Martha\Core\Job\Task\AbstractTask;
 use Martha\Core\Job\Trigger\TriggerAbstract;
 
 /**
@@ -26,9 +27,14 @@ abstract class AbstractJob
     protected $enabled = false;
 
     /**
-     * @var \Martha\Core\Job\Trigger\TriggerAbstract
+     * @var array
      */
-    protected $trigger;
+    protected $triggers = array();
+
+    /**
+     * @var array
+     */
+    protected $tasks = array();
 
     /**
      * @return string
@@ -58,18 +64,18 @@ abstract class AbstractJob
      * @param TriggerAbstract $trigger
      * @return $this
      */
-    public function setTrigger(TriggerAbstract $trigger)
+    public function addTrigger(TriggerAbstract $trigger)
     {
-        $this->trigger = $trigger;
+        $this->triggers[] = $trigger;
         return $this;
     }
 
     /**
-     * @return \Martha\Core\Job\Trigger\TriggerAbstract
+     * @return array
      */
-    public function getTrigger()
+    public function getTriggers()
     {
-
+        return $this->triggers;
     }
 
     public function changeWorkingDirectory($path)
@@ -88,9 +94,37 @@ abstract class AbstractJob
     }
 
     /**
+     * @param array $tasks
+     * @return $this;
+     */
+    public function setTasks(array $tasks)
+    {
+        $this->tasks = $tasks;
+        return $this;
+    }
+
+    /**
+     * @param AbstractTask $task
+     * @return $this
+     */
+    public function addTask(AbstractTask $task)
+    {
+        $this->tasks[] = $task;
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getTasks()
+    {
+        return $this->tasks;
+    }
+
+    /**
      *
      */
-    abstract function runJob();
+    abstract function runJob(Build $build);
 
     /**
      *

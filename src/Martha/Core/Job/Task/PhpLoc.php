@@ -6,7 +6,7 @@ namespace Martha\Core\Job\Task;
  * Class PhpLoc
  * @package Martha\Core\Job\Task
  */
-class PhpLoc extends CliTaskAbstract
+class PhpLoc extends AbstractCliTask
 {
     /**
      * @param string $path

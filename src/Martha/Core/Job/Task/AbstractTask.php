@@ -3,9 +3,9 @@
 namespace Martha\Core\Job\Task;
 
 /**
- * Class TaskAbstract
+ * Class AbstractTask
  * @package Martha\Core\Job\Task
  */
-abstract class TaskAbstract
+abstract class AbstractTask
 {
 }

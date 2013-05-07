@@ -6,7 +6,7 @@ namespace Martha\Core\Job\Task;
  * Class PhpCodeSniffer
  * @package Martha\Core\Job\Task
  */
-class PhpCodeSniffer extends CliTaskAbstract
+class PhpCodeSniffer extends AbstractCliTask
 {
     /**
      * @param string $path

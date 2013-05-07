@@ -2,13 +2,11 @@
 
 namespace Martha\Core\Job\Task;
 
-use Martha\Core\Job\Task\TaskAbstract;
-
 /**
- * Class CliTaskAbstract
+ * Class AbstractCliTask
  * @package Martha\Core\Job\Task
  */
-abstract class CliTaskAbstract extends TaskAbstract
+abstract class AbstractCliTask extends AbstractTask
 {
     /**
      * @var int
