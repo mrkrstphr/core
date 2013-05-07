@@ -2,6 +2,7 @@
 
 namespace Martha\Core\Job;
 
+use Martha\Core\Build\Build;
 use Martha\Core\Job\Task\AbstractTask;
 use Martha\Core\Job\Trigger\TriggerAbstract;
 
@@ -124,7 +125,7 @@ abstract class AbstractJob
     /**
      *
      */
-    abstract function runJob(Build $build);
+    abstract function run(Build $build);
 
     /**
      *
