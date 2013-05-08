@@ -13,21 +13,25 @@ use Martha\Core\Job\Trigger\TriggerAbstract;
 abstract class AbstractJob
 {
     /**
+     * A short name for this Job which will allow it to be easily identified.
      * @var string
      */
     protected $name;
 
     /**
+     * A verbose, optional description of this Job which provides more details about it.
      * @var string
      */
     protected $description;
 
     /**
+     * Stores whether the Job is currently enabled and can be built.
      * @var boolean
      */
     protected $enabled = false;
 
     /**
+     * Stores the list of known triggers for this Job.
      * @var array
      */
     protected $triggers = array();
@@ -38,6 +42,8 @@ abstract class AbstractJob
     protected $tasks = array();
 
     /**
+     * Retrieves the name of the Job.
+     *
      * @return string
      */
     public function getName()
@@ -46,6 +52,8 @@ abstract class AbstractJob
     }
 
     /**
+     * Retrieves the description of the Job.
+     *
      * @return string
      */
     public function getDescription()
@@ -54,6 +62,8 @@ abstract class AbstractJob
     }
 
     /**
+     * Returns whether or not the build is currently enabled (ie: whether or not it can be run).
+     *
      * @return bool
      */
     public function isEnabled()
@@ -62,6 +72,9 @@ abstract class AbstractJob
     }
 
     /**
+     * Add a defined trigger for this job. A trigger is what causes the build of a job, which can be done in any
+     * number of ways.
+     *
      * @param TriggerAbstract $trigger
      * @return $this
      */
@@ -72,26 +85,13 @@ abstract class AbstractJob
     }
 
     /**
+     * Retrieves the list of defined triggers for this job.
+     *
      * @return array
      */
     public function getTriggers()
     {
         return $this->triggers;
-    }
-
-    public function changeWorkingDirectory($path)
-    {
-
-    }
-
-    public function getBuildDirectory()
-    {
-
-    }
-
-    public function getBuildNumber()
-    {
-
     }
 
     /**
@@ -123,12 +123,33 @@ abstract class AbstractJob
     }
 
     /**
+     * Prepares the Build to be run. This functionality is defined by the Job itself, but the implementation of this
+     * method is not required in the child class.
      *
+     * @param Build $build
      */
-    abstract function run(Build $build);
+    public function prepare(Build $build)
+    {
+        // implementation intentionally left blank
+    }
 
     /**
+     * Runs the Build against this Job. This functionality is defined by the Job itself, and the implementation of this
+     * method is required in the child class.
      *
+     * @param Build $build
+     * @return boolean
      */
-    abstract function generateReports();
+    abstract public function run(Build $build);
+
+    /**
+     * Cleans up after a Build has been run. This functionality is defined by the Job itself, but the implementation
+     * of this method is not required in the child class.
+     *
+     * @param Build $build
+     */
+    public function cleanup(Build $build)
+    {
+        // implementation intentionally left blank
+    }
 }

@@ -8,8 +8,19 @@ namespace Martha\Core\Job\Task;
  */
 class PhpLint extends AbstractCliTask
 {
-    public function phpLint()
+    /**
+     * @param array $files
+     */
+    public function phpLint(array $files = array())
     {
+        foreach ($files as $file) {
+            $file = realpath($this->getBuild()->getWorkspace() . '/' . $file);
 
+            if (file_exists($file)) {
+                $this->runCommand('php -l ' . $file);
+            } else {
+                // Do something? TODO FIXME
+            }
+        }
     }
 }

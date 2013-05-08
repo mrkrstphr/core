@@ -2,12 +2,19 @@
 
 namespace Martha\Core\Job\Task;
 
+use Martha\Core\Build\Build;
+
 /**
  * Class AbstractCliTask
  * @package Martha\Core\Job\Task
  */
 abstract class AbstractCliTask extends AbstractTask
 {
+    /**
+     * @var \Martha\Core\Build\Build
+     */
+    protected $build;
+
     /**
      * @var int
      */
@@ -17,6 +24,22 @@ abstract class AbstractCliTask extends AbstractTask
      * @var string
      */
     protected $output;
+
+    /**
+     * @param Build $build
+     */
+    public function __construct(Build $build)
+    {
+        $this->build = $build;
+    }
+
+    /**
+     * @return Build
+     */
+    public function getBuild()
+    {
+        return $this->build;
+    }
 
     /**
      * @param int $status
@@ -71,7 +94,7 @@ abstract class AbstractCliTask extends AbstractTask
                 } else {
                     $fullCommand .= " --{$value}";
                 }
-            } else if (is_string($option)) {
+            } elseif (is_string($option)) {
                 if (strlen($option) == 1) {
                     $fullCommand .= " -{$option} {$value}";
                 } else {
