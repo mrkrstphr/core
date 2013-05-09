@@ -2,7 +2,7 @@
 
 namespace Martha\Core\Job\Trigger;
 
-use Martha\Scm\Diff;
+use Martha\Scm\ChangeSet\ChangeSet;
 
 /**
  * Class ScmChange
@@ -11,23 +11,23 @@ use Martha\Scm\Diff;
 class ScmChange extends TriggerAbstract
 {
     /**
-     * @var \Martha\Core\Scm\Diff
+     * @var \Martha\Scm\ChangeSet\ChangeSet
      */
-    protected $diff;
+    protected $changeSet;
 
     /**
-     * @param \Martha\Core\Scm\Diff $diff
+     * @param \Martha\Scm\ChangeSet\ChangeSet $changeSet
      */
-    public function setDiff($diff)
+    public function setChangeSet($changeSet)
     {
-        $this->diff = $diff;
+        $this->changeSet = $changeSet;
     }
 
     /**
-     * @return \Martha\Core\Scm\Diff
+     * @return \Martha\Scm\ChangeSet\ChangeSet $changeSet
      */
-    public function getDiff()
+    public function getChangeSet()
     {
-        return $this->diff;
+        return $this->changeSet;
     }
 }
