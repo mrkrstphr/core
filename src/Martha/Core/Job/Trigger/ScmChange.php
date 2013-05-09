@@ -2,7 +2,7 @@
 
 namespace Martha\Core\Job\Trigger;
 
-use Martha\Core\Scm\Diff;
+use Martha\Scm\Diff;
 
 /**
  * Class ScmChange
