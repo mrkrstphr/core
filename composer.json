@@ -7,7 +7,7 @@
         "martha-ci/command": "dev-master",
         "martha-ci/core": "dev-master",
         "martha-ci/scm": "dev-master"
-    }
+    },
     "autoload": {
         "psr-0": {
             "Martha\\Core": ["src/", "tests/"]
