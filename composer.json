@@ -1,0 +1,11 @@
+{
+    "require-dev": {
+        "phpunit/phpunit": "3.7.*"
+    },
+    "require": {
+        "php": ">=5.4",
+        "martha-ci/command": "dev-master",
+        "martha-ci/core": "dev-master",
+        "martha-ci/scm": "dev-master"
+    }
+}
