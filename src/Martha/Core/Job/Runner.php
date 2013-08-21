@@ -2,7 +2,9 @@
 
 namespace Martha\Core\Job;
 
+use Symfony\Component\Yaml\Yaml;
 use Martha\Core\Job\Trigger\TriggerAbstract;
+use Martha\Scm\Provider\ProviderFactory;
 
 /**
  * Class Runner
@@ -37,45 +39,43 @@ class Runner
         }
 
         if (isset($config['build-directory'])) {
-            $this->dataDirectory = $config['build-directory'];
+            $this->buildDirectory = $config['build-directory'];
         }
     }
 
+    /**
+     * @throws \Exception
+     */
     public function run()
     {
         $jobId = $this->trigger->getChangeSet()->getNewestCommit()->getRevisionNumber();
 
-        $workingDir = $this->buildDirectory .  '/jobs/' . $this->trigger->getRepository()->getName() . '/' . $jobId;
+        $workingDir = $this->buildDirectory . '/' . $this->trigger->getRepository()->getName() . '/' . $jobId;
+        $outputDir = $this->dataDirectory . '/' . $this->trigger->getRepository()->getName() . '/' . $jobId;
 
         if (!file_exists($workingDir)) {
-            mkdir($workingDir, 0777, true);
+            mkdir($workingDir, 0775, true);
         }
 
-        if (!file_exists($workingDir . '/output')) {
-            mkdir($workingDir . '/output');
+        if (!file_exists($outputDir)) {
+            mkdir($outputDir, 0775, true);
         }
 
-
-        $scm = \Martha\Scm\Provider\ProviderFactory::createForRepository($this->trigger->getRepository());
-
-//$scm->cloneRepository($workingDir);
-//$scm->checkout($jobId);
+        $scm = ProviderFactory::createForRepository($this->trigger->getRepository());
+        $scm->cloneRepository($workingDir);
+        $scm->checkout($jobId);
 
         if (!file_exists($workingDir . '/build.yml')) {
             throw new \Exception('No build.yml file found');
         }
 
-        $yaml = new \Symfony\Component\Yaml\Yaml();
+        $yaml = new Yaml();
         $script = $yaml->parse($workingDir . '/build.yml');
 
         $status = [];
 
         foreach ($script['build'] as $commandIndex => $command) {
-            //$command = 'cd ' . $workingDir . ' && ' . $command;
-
-            $command = str_replace('${outputdir}', $workingDir . '/output', $command);
-
-            echo "-- command: {$command}\n";
+            $command = str_replace('${outputdir}', $outputDir, $command);
 
             $proc = proc_open(
                 $command,
@@ -96,20 +96,13 @@ class Runner
             $return = proc_close($proc);
 
             if ($errors) {
-                echo 'Errors: ' . $errors . "\n";
+
             }
-
-            echo "Output:\n{$output}\n";
-
-            echo "Return: ";
-            var_dump($return);
-            echo "\n";
 
             $status[$commandIndex] = $return;
         }
 
-        print_r($status);
-
-//rmdir($workingDir);
+        // empty out the build directory:
+        exec('rm -rf ' . $workingDir);
     }
 }
