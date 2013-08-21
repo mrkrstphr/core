@@ -7,10 +7,10 @@ use Martha\Core\Job\Task\AbstractTask;
 use Martha\Core\Job\Trigger\TriggerAbstract;
 
 /**
- * Class AbstractJob
+ * Class Job
  * @package Martha\Core\Job
  */
-abstract class AbstractJob
+class Job
 {
     /**
      * A short name for this Job which will allow it to be easily identified.
@@ -132,15 +132,6 @@ abstract class AbstractJob
     {
         // implementation intentionally left blank
     }
-
-    /**
-     * Runs the Build against this Job. This functionality is defined by the Job itself, and the implementation of this
-     * method is required in the child class.
-     *
-     * @param Build $build
-     * @return boolean
-     */
-    abstract public function run(Build $build);
 
     /**
      * Cleans up after a Build has been run. This functionality is defined by the Job itself, but the implementation
