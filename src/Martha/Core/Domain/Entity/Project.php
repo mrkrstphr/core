@@ -18,6 +18,11 @@ class Project extends AbstractEntity
     /**
      * @var string
      */
+    protected $description;
+
+    /**
+     * @var string
+     */
     protected $scm;
 
     /**
@@ -54,6 +59,24 @@ class Project extends AbstractEntity
     public function getName()
     {
         return $this->name;
+    }
+
+    /**
+     * @param string $description
+     * @return $this
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDescription()
+    {
+        return $this->description;
     }
 
     /**
@@ -96,7 +119,7 @@ class Project extends AbstractEntity
      * @param \Doctrine\Common\Collections\ArrayCollection $builds
      * @return $this
      */
-    public function setBuilds($builds)
+    public function setBuilds(ArrayCollection $builds)
     {
         $this->builds = $builds;
         return $this;

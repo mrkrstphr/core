@@ -2,6 +2,7 @@
 
 namespace Martha\Core\Domain\Entity;
 
+use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /**
@@ -16,9 +17,19 @@ class Build extends AbstractEntity
     protected $project;
 
     /**
+     * @var \DateTime
+     */
+    protected $date;
+
+    /**
      * @var \Doctrine\Common\Collections\ArrayCollection
      */
     protected $artifacts;
+
+    /**
+     * @var boolean
+     */
+    protected $wasSuccessful;
 
     /**
      * Set us up the class!
@@ -47,10 +58,28 @@ class Build extends AbstractEntity
     }
 
     /**
+     * @param \DateTime $date
+     * @return $this
+     */
+    public function setDate(DateTime $date)
+    {
+        $this->date = $date;
+        return $this;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getDate()
+    {
+        return $this->date;
+    }
+
+    /**
      * @param \Doctrine\Common\Collections\ArrayCollection $artifacts
      * @return $this
      */
-    public function setArtifacts($artifacts)
+    public function setArtifacts(ArrayCollection $artifacts)
     {
         $this->artifacts = $artifacts;
         return $this;
@@ -62,5 +91,23 @@ class Build extends AbstractEntity
     public function getArtifacts()
     {
         return $this->artifacts;
+    }
+
+    /**
+     * @param boolean $wasSuccessful
+     * @return $this
+     */
+    public function setWasSuccessful($wasSuccessful)
+    {
+        $this->wasSuccessful = $wasSuccessful;
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getWasSuccessful()
+    {
+        return $this->wasSuccessful;
     }
 }
