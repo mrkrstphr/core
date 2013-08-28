@@ -3,9 +3,9 @@
 namespace Martha\Core\Domain\Repository;
 
 /**
- * Class BuildRepositoryInterface
+ * Class ProjectRepositoryInterface
  * @package Martha\Core\Domain\Repository
  */
-interface BuildRepositoryInterface extends RepositoryInterface
+interface ProjectRepositoryInterface extends RepositoryInterface
 {
 }
