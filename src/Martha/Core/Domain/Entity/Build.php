@@ -19,7 +19,7 @@ class Build extends AbstractEntity
     /**
      * @var \DateTime
      */
-    protected $date;
+    protected $created;
 
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection

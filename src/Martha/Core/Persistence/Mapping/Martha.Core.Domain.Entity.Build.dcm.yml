@@ -1,0 +1,20 @@
+Martha\Core\Domain\Entity\Build:
+  type: entity
+  table: builds
+  id:
+    id:
+      type: bigint
+      generator:
+        strategy: IDENTITY
+  fields:
+    wasSuccessful:
+      column: was_successful
+      type: boolean
+    created:
+      type: datetimetz
+  manyToOne:
+      project:
+        targetEntity: Martha\Core\Domain\Entity\Project
+        joinColumn:
+          name: project_id
+          referencedColumnName: id
