@@ -9,7 +9,8 @@
     },
     "autoload": {
         "psr-0": {
-            "Martha\\Core": ["src/", "tests/"]
+            "Martha\\Core": "src/",
+            "MarthaTest\\Core": "tests/unit"
         }
     }
 }
