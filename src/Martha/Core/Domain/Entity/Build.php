@@ -33,6 +33,26 @@ class Build extends AbstractEntity
     /**
      * @var string
      */
+    protected $branch;
+
+    /**
+     * @var string
+     */
+    protected $fork;
+
+    /**
+     * @var string
+     */
+    protected $method;
+
+    /**
+     * @var string
+     */
+    protected $revisionNumber;
+
+    /**
+     * @var string
+     */
     protected $status;
 
     /**
@@ -64,6 +84,78 @@ class Build extends AbstractEntity
     public function getProject()
     {
         return $this->project;
+    }
+
+    /**
+     * @param string $branch
+     * @return $this
+     */
+    public function setBranch($branch)
+    {
+        $this->branch = $branch;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getBranch()
+    {
+        return $this->branch;
+    }
+
+    /**
+     * @param string $fork
+     * @return $this
+     */
+    public function setFork($fork)
+    {
+        $this->fork = $fork;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getFork()
+    {
+        return $this->fork;
+    }
+
+    /**
+     * @param string $method
+     * @return $this
+     */
+    public function setMethod($method)
+    {
+        $this->method = $method;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMethod()
+    {
+        return $this->method;
+    }
+
+    /**
+     * @param string $revisionNumber
+     * @return $this
+     */
+    public function setRevisionNumber($revisionNumber)
+    {
+        $this->revisionNumber = $revisionNumber;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getRevisionNumber()
+    {
+        return $this->revisionNumber;
     }
 
     /**

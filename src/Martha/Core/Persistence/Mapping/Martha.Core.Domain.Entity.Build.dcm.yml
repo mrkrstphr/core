@@ -7,12 +7,21 @@ Martha\Core\Domain\Entity\Build:
       generator:
         strategy: IDENTITY
   fields:
+    branch:
+      length: 100
+      nullable: true
+    fork:
+      length: 100
+      nullable: true
+    method:
+      length: 100
+      nullable: true
+    revisionNumber:
+      column: revision_number
+      length: 255
+      nullable: true
     status:
       length: 40
-    wasSuccessful:
-      column: was_successful
-      type: boolean
-      null: true
     created:
       type: datetimetz
   manyToOne:
