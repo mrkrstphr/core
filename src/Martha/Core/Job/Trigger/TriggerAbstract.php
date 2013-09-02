@@ -17,6 +17,21 @@ abstract class TriggerAbstract
     protected $repository;
 
     /**
+     * @var string
+     */
+    protected $branch;
+
+    /**
+     * @var string
+     */
+    protected $fork;
+
+    /**
+     * @var string
+     */
+    protected $revisionNumber;
+
+    /**
      * @var ChangeSet
      */
     protected $changeSet;
@@ -29,6 +44,60 @@ abstract class TriggerAbstract
     {
         $this->repository = $repository;
         return $this;
+    }
+
+    /**
+     * @param string $branch
+     * @return $this
+     */
+    public function setBranch($branch)
+    {
+        $this->branch = $branch;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getBranch()
+    {
+        return $this->branch;
+    }
+
+    /**
+     * @param string $fork
+     * @return $this
+     */
+    public function setFork($fork)
+    {
+        $this->fork = $fork;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getFork()
+    {
+        return $this->fork;
+    }
+
+    /**
+     * @param string $revisionNumber
+     * @return $this
+     */
+    public function setRevisionNumber($revisionNumber)
+    {
+        $this->revisionNumber = $revisionNumber;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getRevisionNumber()
+    {
+        return $this->revisionNumber;
     }
 
     /**
