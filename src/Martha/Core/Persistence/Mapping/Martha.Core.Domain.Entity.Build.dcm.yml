@@ -7,9 +7,12 @@ Martha\Core\Domain\Entity\Build:
       generator:
         strategy: IDENTITY
   fields:
+    status:
+      length: 40
     wasSuccessful:
       column: was_successful
       type: boolean
+      null: true
     created:
       type: datetimetz
   manyToOne:

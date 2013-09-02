@@ -11,6 +11,10 @@ use Doctrine\Common\Collections\ArrayCollection;
  */
 class Build extends AbstractEntity
 {
+    const STATUS_BUILDING = 'building';
+    const STATUS_FAILURE = 'failure';
+    const STATUS_SUCCESS = 'success';
+
     /**
      * @var Project
      */
@@ -25,6 +29,11 @@ class Build extends AbstractEntity
      * @var \Doctrine\Common\Collections\ArrayCollection
      */
     protected $artifacts;
+
+    /**
+     * @var string
+     */
+    protected $status;
 
     /**
      * @var boolean
@@ -58,21 +67,39 @@ class Build extends AbstractEntity
     }
 
     /**
+     * @param string $status
+     * @return $this
+     */
+    public function setStatus($status)
+    {
+        $this->status = $status;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getStatus()
+    {
+        return $this->status;
+    }
+
+    /**
      * @param \DateTime $date
      * @return $this
      */
-    public function setDate(DateTime $date)
+    public function setCreated(DateTime $date)
     {
-        $this->date = $date;
+        $this->created = $date;
         return $this;
     }
 
     /**
      * @return \DateTime
      */
-    public function getDate()
+    public function getCreated()
     {
-        return $this->date;
+        return $this->created;
     }
 
     /**
