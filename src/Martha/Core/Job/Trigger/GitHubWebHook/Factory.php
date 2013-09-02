@@ -30,10 +30,11 @@ class Factory
         }
 
         $trigger = new GitHubWebHook();
+        $trigger->setHook($hook);
 
         $repository = new Repository();
         $repository->setType('git')
-            ->setName($repositoryData['name'])
+            ->setName($repositoryData['owner']['name'] . '/' . $repositoryData['name'])
             ->setDescription($repositoryData['description'])
             ->setPath($repositoryData['url']);
 
