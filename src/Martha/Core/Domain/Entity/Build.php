@@ -11,8 +11,24 @@ use Doctrine\Common\Collections\ArrayCollection;
  */
 class Build extends AbstractEntity
 {
+    /**
+     * Status for when a build is scheduled, but not yet running.
+     */
+    const STATUS_PENDING = 'pending';
+
+    /**
+     * Status for when a build is currently running.
+     */
     const STATUS_BUILDING = 'building';
+
+    /**
+     * Status for when a build has failed.
+     */
     const STATUS_FAILURE = 'failure';
+
+    /**
+     * Status for when a build has succeeded.
+     */
     const STATUS_SUCCESS = 'success';
 
     /**
@@ -39,6 +55,11 @@ class Build extends AbstractEntity
      * @var string
      */
     protected $fork;
+
+    /**
+     * @var string
+     */
+    protected $forkUri;
 
     /**
      * @var string
@@ -120,6 +141,24 @@ class Build extends AbstractEntity
     public function getFork()
     {
         return $this->fork;
+    }
+
+    /**
+     * @param string $forkUri
+     * @return $this
+     */
+    public function setForkUri($forkUri)
+    {
+        $this->forkUri = $forkUri;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getForkUri()
+    {
+        return $this->forkUri;
     }
 
     /**

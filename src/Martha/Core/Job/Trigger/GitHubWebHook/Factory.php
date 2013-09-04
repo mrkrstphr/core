@@ -46,6 +46,7 @@ class Factory
 
         $branch = basename($hook['ref']);
         $trigger->setBranch($branch);
+        $trigger->setRevisionNumber($hook['head_commit']['id']);
 
         $changeSet = new ChangeSet();
 

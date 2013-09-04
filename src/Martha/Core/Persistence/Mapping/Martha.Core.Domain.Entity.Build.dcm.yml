@@ -13,6 +13,9 @@ Martha\Core\Domain\Entity\Build:
     fork:
       length: 100
       nullable: true
+    forkUri:
+      column: fork_uri
+      nullable: true
     method:
       length: 100
       nullable: true
