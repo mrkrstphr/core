@@ -125,6 +125,7 @@ class Runner
      * Log a message to the console output file.
      *
      * @todo Implement handling of type
+     * @throws \Exception
      * @param string $message
      * @param string $type
      */

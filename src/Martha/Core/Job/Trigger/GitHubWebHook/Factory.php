@@ -38,6 +38,15 @@ class Factory
             ->setDescription($repositoryData['description'])
             ->setPath($repositoryData['url']);
 
+        $url = str_replace('https://github.com/', '', $repositoryData['url']);
+
+        if ($repository->getName() != $url) {
+            $trigger->setFork($url);
+        }
+
+        $branch = basename($hook['ref']);
+        $trigger->setBranch($branch);
+
         $changeSet = new ChangeSet();
 
         foreach ($commits as $commitData) {
