@@ -2,6 +2,7 @@
 
 namespace Martha\Core\Job;
 
+use Martha\Core\Domain\Entity\Build;
 use Martha\Core\Domain\Repository\BuildRepositoryInterface;
 
 /**
@@ -50,8 +51,12 @@ class Queue
                 $this->maxBuildsInProgress - count($building)
             );
 
+            /**
+             * @var Build $build
+             */
             foreach ($pending as $build) {
-                // todo fix me: build
+                // Find a cleaner, more graceful way to do this:
+                exec('php ' . realpath(__DIR__ . '/run.php ' . $build->getId()));
             }
         }
     }
