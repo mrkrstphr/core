@@ -1,0 +1,14 @@
+Martha\Core\Domain\Entity\Artifact:
+  type: entity
+  table: artifacts
+  id:
+    id:
+      type: bigint
+      generator:
+        strategy: IDENTITY
+  manyToOne:
+      build:
+        targetEntity: Martha\Core\Domain\Entity\Build
+        joinColumn:
+          name: build_id
+          referencedColumnName: id

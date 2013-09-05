@@ -1,0 +1,35 @@
+Martha\Core\Domain\Entity\Build:
+  type: entity
+  table: builds
+  id:
+    id:
+      type: bigint
+      generator:
+        strategy: IDENTITY
+  fields:
+    branch:
+      length: 100
+      nullable: true
+    fork:
+      length: 100
+      nullable: true
+    forkUri:
+      column: fork_uri
+      nullable: true
+    method:
+      length: 100
+      nullable: true
+    revisionNumber:
+      column: revision_number
+      length: 255
+      nullable: true
+    status:
+      length: 40
+    created:
+      type: datetimetz
+  manyToOne:
+      project:
+        targetEntity: Martha\Core\Domain\Entity\Project
+        joinColumn:
+          name: project_id
+          referencedColumnName: id

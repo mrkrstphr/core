@@ -1,0 +1,21 @@
+Martha\Core\Domain\Entity\Project:
+  type: entity
+  table: projects
+  id:
+    id:
+      type: bigint
+      generator:
+        strategy: IDENTITY
+  fields:
+    name:
+      length: 100
+    description:
+      nullable: true
+    scm:
+      length: 100
+    uri:
+      length: 100
+  oneToMany:
+    builds:
+      targetEntity: Martha\Core\Domain\Entity\Build
+      mappedBy: project
