@@ -2,9 +2,9 @@
 
 namespace Martha\Core\Job;
 
+use Martha\Core\Domain\Repository\BuildRepositoryInterface;
 use Symfony\Component\Yaml\Yaml;
 use Martha\Core\Domain\Entity\Build;
-use Martha\Core\Job\Trigger\TriggerAbstract;
 use Martha\Scm\Provider\ProviderFactory;
 
 /**
@@ -44,26 +44,19 @@ class Runner
     protected $outputFile;
 
     /**
-     * @var \Martha\Core\Job\Trigger\TriggerAbstract
+     * @var \Martha\Core\Domain\Repository\BuildRepositoryInterface
      */
-    protected $trigger;
+    protected $buildRepository;
 
     /**
-     * @var \Martha\Core\Domain\Entity\Build
-     */
-    protected $build;
-
-    /**
-     * Set us up the class! Take the Trigger, Build and configuration to build the commit.
+     * Set us up the class! Take the Build and configuration to build the commit.
      *
-     * @param TriggerAbstract $trigger
-     * @param Build $build
+     * @param BuildRepositoryInterface $buildRepo
      * @param array $config
      */
-    public function __construct(TriggerAbstract $trigger, Build $build, array $config = [])
+    public function __construct(BuildRepositoryInterface $buildRepo, array $config = [])
     {
-        $this->trigger = $trigger;
-        $this->build = $build;
+        $this->buildRepository = $buildRepo;
 
         if (isset($config['data-directory'])) {
             $this->dataDirectory = $config['data-directory'];
@@ -77,15 +70,21 @@ class Runner
     /**
      * Kick off the build process and return whether the build was successful or not.
      *
-     * @throws \Exception
-     * @return boolean
+     * @param int $buildId
+     * @return bool
      */
-    public function run()
+    public function run($buildId)
     {
-        $this->jobId = $this->build->getId();
+        /**
+         * @var Build $build
+         */
+        $build = $this->buildRepository->getById($buildId);
 
-        $this->setupEnvironment();
-        $this->checkoutSourceCode();
+        $build->setStatus(Build::STATUS_BUILDING);
+        $this->buildRepository->flush();
+
+        $this->setupEnvironment($build);
+        $this->checkoutSourceCode($build);
 
         $script = $this->parseBuildScript();
 
@@ -118,6 +117,9 @@ class Runner
             $wasSuccessful = $wasSuccessful && $stepStatus == 0;
         }
 
+        $build->setStatus($wasSuccessful ? Build::STATUS_SUCCESS : Build::STATUS_FAILURE);
+        $this->buildRepository->flush();
+
         return $wasSuccessful;
     }
 
@@ -141,14 +143,15 @@ class Runner
     /**
      * Setup the directory structure needed for the build.
      *
+     * @param \Martha\Core\Build\Build $build
      * @return $this
      */
-    protected function setupEnvironment()
+    protected function setupEnvironment(Build $build)
     {
         $this->workingDir = $this->buildDirectory . '/' .
-            $this->trigger->getRepository()->getName() . '/' . $this->jobId;
+            $build->getProject()->getName() . '/' . $build->getId();
         $this->outputDir = $this->dataDirectory . '/' .
-            $this->trigger->getRepository()->getName() . '/' . $this->jobId;
+            $build->getProject()->getName() . '/' . $build->getId();
 
         if (!file_exists($this->workingDir)) {
             mkdir($this->workingDir, 0775, true);
@@ -168,13 +171,19 @@ class Runner
     /**
      * Checks out the source code for this commit.
      *
-     * return $this
+     * @param \Martha\Core\Build\Build $build
+     * @return $this
      */
-    protected function checkoutSourceCode()
+    protected function checkoutSourceCode(Build $build)
     {
-        $scm = ProviderFactory::createForRepository($this->trigger->getRepository());
+        $scm = ProviderFactory::createForProject($build->getProject());
+
+        if ($build->getForkUri()) {
+            $scm->setRepository($build->getForkUri());
+        }
+
         $scm->cloneRepository($this->workingDir);
-        //$scm->checkout($this->jobId); // todo fix me, won't work anymore
+        $scm->checkout($build->getRevisionNumber());
 
         return $this;
     }
