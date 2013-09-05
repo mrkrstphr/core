@@ -4,13 +4,18 @@
     "type": "library",
     "keywords": [],
     "homepage": "http://github.com/martha-ci",
-    "require": {
-        "php": ">=5.4"
-    },
     "autoload": {
         "psr-0": {
             "Martha\\Core": "src/",
             "MarthaTest\\Core": "tests/unit"
         }
+    },
+    "require-dev": {
+        "phpunit/phpunit": "3.7.*"
+    },
+    "require": {
+        "php": ">=5.4",
+        "martha-ci/command": "dev-master",
+        "martha-ci/scm": "dev-master"
     }
 }
