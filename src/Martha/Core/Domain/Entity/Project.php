@@ -6,7 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Class Project
- * @package Martha\Core\Domain
+ * @package Martha\Core\Domain\Entity
  */
 class Project extends AbstractEntity
 {
