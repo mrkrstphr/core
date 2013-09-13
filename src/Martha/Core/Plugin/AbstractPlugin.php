@@ -29,6 +29,8 @@ abstract class AbstractPlugin
     public function __construct(PluginManager $pluginManager)
     {
         $this->pluginManager = $pluginManager;
+
+        $this->init();
     }
 
     /**
