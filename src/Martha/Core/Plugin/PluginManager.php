@@ -46,5 +46,7 @@ class PluginManager
                 $this->remoteProjectProviders[$index] = new $provider();
             }
         }
+
+        return $this->remoteProjectProviders;
     }
 }

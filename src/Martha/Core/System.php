@@ -25,20 +25,37 @@ class System
      */
     protected function __construct(array $config)
     {
+        $this->loadPlugins($config);
+    }
+
+    /**
+     * @param array $config
+     */
+    protected function loadPlugins(array $config)
+    {
+        // todo fixme: this makes testing very hard
         $this->pluginManager = new PluginManager();
 
-        $modules = glob($config['plugin-path'] . '/*');
+        $path = $config['plugin-path'];
 
-        foreach ($modules as $module) {
-            if (file_exists($module . '/Plugin.php')) {
-                require_once $module . '/Plugin.php';
+        $files = [];
 
-                $className = 'Martha\Plugin\\' . basename($module) . '\Plugin';
+        if (is_array($path)) {
+            foreach ($path as $dir) {
+                $files = array_merge($files, glob($dir . 'Plugin.php'));
+            }
+        } else {
+            $files = glob($path . 'Plugin.php');
+        }
 
-                if (class_exists($className)) {
-                    $plugin = new $className($this->pluginManager);
-                    $this->pluginManager->registerPlugin($className, $plugin);
-                }
+        foreach ($files as $file) {
+            require_once $file;
+
+            $className = 'Martha\Plugin\\' . basename(dirname($file)) . '\Plugin';
+
+            if (class_exists($className)) {
+                $plugin = new $className($this->pluginManager);
+                $this->pluginManager->registerPlugin($className, $plugin);
             }
         }
     }
