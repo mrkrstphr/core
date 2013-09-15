@@ -14,6 +14,11 @@ abstract class AbstractPlugin
     protected $pluginManager;
 
     /**
+     * @var array
+     */
+    protected $config;
+
+    /**
      * @var string
      */
     protected $name;
@@ -25,10 +30,12 @@ abstract class AbstractPlugin
 
     /**
      * @param PluginManager $pluginManager
+     * @param array $config
      */
-    public function __construct(PluginManager $pluginManager)
+    public function __construct(PluginManager $pluginManager, array $config)
     {
         $this->pluginManager = $pluginManager;
+        $this->config = $config;
 
         $this->init();
     }

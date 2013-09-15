@@ -2,6 +2,8 @@
 
 namespace Martha\Core\Plugin;
 
+use Martha\Core\Plugin\RemoteProjectProvider;
+use Martha\Core\Plugin\RemoteProjectProvider\AbstractRemoteProjectProvider;
 use Martha\Plugin\GitHub\Plugin;
 
 /**
@@ -16,14 +18,19 @@ class PluginManager
 
     protected $routes = [];
 
-    public function registerPlugin($name, Plugin $plugin)
+    public function registerPlugin($name, AbstractPlugin $plugin)
     {
         $this->plugins[$name] = $plugin;
     }
 
-    public function registerRemoteProjectProvider($provider)
+    /**
+     * @param Plugin $plugin
+     * @param string $provider
+     * @return $this
+     */
+    public function registerRemoteProjectProvider(Plugin $plugin, $provider)
     {
-        $this->remoteProjectProviders[] = $provider;
+        $this->remoteProjectProviders[] = new $provider($plugin);
         return $this;
     }
 
@@ -39,14 +46,21 @@ class PluginManager
 
     public function getRemoteProjectProviders()
     {
-        // make sure they are instantiated
+        return $this->remoteProjectProviders;
+    }
 
+    /**
+     * @param string $name
+     * @return bool|AbstractRemoteProjectProvider
+     */
+    public function getRemoteProjectProvider($name)
+    {
         foreach ($this->remoteProjectProviders as $index => $provider) {
-            if (is_string($provider)) {
-                $this->remoteProjectProviders[$index] = new $provider();
+            if ($provider->getProviderName() == $name) {
+                return $provider;
             }
         }
 
-        return $this->remoteProjectProviders;
+        return false;
     }
 }

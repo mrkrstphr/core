@@ -51,10 +51,15 @@ class System
         foreach ($files as $file) {
             require_once $file;
 
-            $className = 'Martha\Plugin\\' . basename(dirname($file)) . '\Plugin';
+            $pluginName = basename(dirname($file));
+
+            $className = 'Martha\Plugin\\' . $pluginName . '\Plugin';
 
             if (class_exists($className)) {
-                $plugin = new $className($this->pluginManager);
+                $plugin = new $className(
+                    $this->pluginManager,
+                    isset($config['plugins'][$pluginName]) ? $config['plugins'][$pluginName] : []
+                );
                 $this->pluginManager->registerPlugin($className, $plugin);
             }
         }
