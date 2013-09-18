@@ -46,7 +46,7 @@ class Queue
 
         if (count($building) < $this->maxBuildsInProgress) {
             $pending = $this->buildRepository->getBy(
-                ['status' => 'building'],
+                ['status' => 'pending'],
                 ['created' => 'ASC'],
                 $this->maxBuildsInProgress - count($building)
             );

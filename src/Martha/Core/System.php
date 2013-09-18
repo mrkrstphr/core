@@ -2,6 +2,8 @@
 
 namespace Martha\Core;
 
+use Doctrine\ORM\EntityManager;
+use Martha\Core\Persistence\Repository\Factory;
 use Martha\Core\Plugin\PluginManager;
 
 /**
@@ -26,12 +28,21 @@ class System
     protected $pluginManager;
 
     /**
+     * @var Factory
+     */
+    protected $repositoryFactory;
+
+    /**
      * Set us up the Martha!
      *
+     * @param EntityManager $em
      * @param array $config
      */
-    protected function __construct(array $config)
+    protected function __construct(EntityManager $em, array $config)
     {
+        // todo fix me, inject this instead of EntityManager
+        $this->repositoryFactory = new Factory($em);
+
         $this->config = $config;
         $this->loadPlugins($config);
     }
@@ -86,6 +97,14 @@ class System
     }
 
     /**
+     * @return Factory
+     */
+    public function getRepositoryFactory()
+    {
+        return $this->repositoryFactory;
+    }
+
+    /**
      * Get the URL for this Martha installation.
      *
      * @return string
@@ -98,11 +117,12 @@ class System
     /**
      * Bootstrap the Martha core system.
      *
+     * @param EntityManager $em
      * @param array $config
      */
-    public static function initialize(array $config)
+    public static function initialize(EntityManager $em, array $config)
     {
-        self::$instance = new self($config);
+        self::$instance = new self($em, $config);
     }
 
     /**
