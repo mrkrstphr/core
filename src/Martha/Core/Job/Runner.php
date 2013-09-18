@@ -183,7 +183,10 @@ class Runner
         }
 
         $scm->cloneRepository($this->workingDir);
-        $scm->checkout($build->getRevisionNumber());
+
+        if ($build->getRevisionNumber()) {
+            $scm->checkout($build->getRevisionNumber());
+        }
 
         return $this;
     }
