@@ -61,6 +61,14 @@ abstract class AbstractPlugin
     }
 
     /**
+     * @return array
+     */
+    public function getConfig()
+    {
+        return $this->config;
+    }
+
+    /**
      * User defined setup of the plugin.
      */
     abstract public function init();
