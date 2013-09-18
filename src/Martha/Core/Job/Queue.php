@@ -51,12 +51,14 @@ class Queue
                 $this->maxBuildsInProgress - count($building)
             );
 
+            $script = getcwd() . '/scripts/run.php';
+
             /**
              * @var Build $build
              */
             foreach ($pending as $build) {
                 // Find a cleaner, more graceful way to do this:
-                exec('php ' . realpath(__DIR__ . '/run.php ' . $build->getId()));
+                exec('php ' . $script . ' ' . $build->getId() . ' > /dev/null &');
             }
         }
     }
