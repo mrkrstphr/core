@@ -3,6 +3,7 @@
 namespace Martha\Core\Job;
 
 use Martha\Core\Domain\Repository\BuildRepositoryInterface;
+use Martha\Core\System;
 use Symfony\Component\Yaml\Yaml;
 use Martha\Core\Domain\Entity\Build;
 use Martha\Scm\Provider\ProviderFactory;
@@ -13,6 +14,11 @@ use Martha\Scm\Provider\ProviderFactory;
  */
 class Runner
 {
+    /**
+     * @var \Martha\Core\System
+     */
+    protected $system;
+
     /**
      * @var string
      */
@@ -51,11 +57,13 @@ class Runner
     /**
      * Set us up the class! Take the Build and configuration to build the commit.
      *
+     * @param System $system
      * @param BuildRepositoryInterface $buildRepo
      * @param array $config
      */
-    public function __construct(BuildRepositoryInterface $buildRepo, array $config = [])
+    public function __construct(System $system, BuildRepositoryInterface $buildRepo, array $config = [])
     {
+        $this->system = $system;
         $this->buildRepository = $buildRepo;
 
         if (isset($config['data-directory'])) {
@@ -119,6 +127,8 @@ class Runner
 
         $build->setStatus($wasSuccessful ? Build::STATUS_SUCCESS : Build::STATUS_FAILURE);
         $this->buildRepository->flush();
+
+        $this->system->getEventManager()->trigger('build.complete', $build);
 
         return $wasSuccessful;
     }
