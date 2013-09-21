@@ -37,11 +37,11 @@ class EventManager
 
         if (isset($this->listeners[$event])) {
             foreach ($this->listeners[$event] as $callback) {
-                call_user_func_array(
-                    $callback,
-                    $event,
-                    count(func_get_args()) > 1 ? array_shift(func_get_args()) : []
-                );
+                $arguments = func_get_args();
+                array_shift($arguments);
+                array_unshift($arguments, $event);
+
+                call_user_func_array($callback, $arguments);
             }
         }
     }
