@@ -125,6 +125,14 @@ class PluginManager
     }
 
     /**
+     * @return \Martha\Core\EventManager
+     */
+    public function getEventManager()
+    {
+        return $this->system->getEventManager();
+    }
+
+    /**
      * Get all RemoteProjectProviders registered.
      *
      * @return array

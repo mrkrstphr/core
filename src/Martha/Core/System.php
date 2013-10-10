@@ -28,6 +28,11 @@ class System
     protected $pluginManager;
 
     /**
+     * @var EventManager
+     */
+    protected $eventManager;
+
+    /**
      * @var Factory
      */
     protected $repositoryFactory;
@@ -42,6 +47,10 @@ class System
     {
         // todo fix me, inject this instead of EntityManager
         $this->repositoryFactory = new Factory($em);
+        $this->eventManager = new EventManager();
+
+        // todo fixme: this makes testing very hard
+        $this->pluginManager = new PluginManager($this);
 
         $this->config = $config;
         $this->loadPlugins($config);
@@ -54,9 +63,6 @@ class System
      */
     protected function loadPlugins(array $config)
     {
-        // todo fixme: this makes testing very hard
-        $this->pluginManager = new PluginManager($this);
-
         $path = $config['plugin-path'];
 
         $files = [];
@@ -97,6 +103,14 @@ class System
     }
 
     /**
+     * @return EventManager
+     */
+    public function getEventManager()
+    {
+        return $this->eventManager;
+    }
+
+    /**
      * @return Factory
      */
     public function getRepositoryFactory()
@@ -119,10 +133,12 @@ class System
      *
      * @param EntityManager $em
      * @param array $config
+     * @return $this
      */
     public static function initialize(EntityManager $em, array $config)
     {
         self::$instance = new self($em, $config);
+        return self::$instance;
     }
 
     /**
