@@ -220,7 +220,7 @@ class Runner
     protected function parseBuildScript()
     {
         if (!file_exists($this->workingDir . '/build.yml')) {
-            $this->log('<strong>No <code>build.yml</code> file found in the root of the source code');
+            $this->log('<strong>No <code>build.yml</code> file found in the root of the source code</strong>');
             return false;
         }
 
