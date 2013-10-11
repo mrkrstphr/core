@@ -96,6 +96,12 @@ class Runner
 
         $script = $this->parseBuildScript();
 
+        if (!$script) {
+            $build->setStatus(Build::STATUS_FAILURE);
+            $this->buildRepository->flush();
+            return false;
+        }
+
         $start = microtime(true);
 
         $this->log('Build started at: <strong>' . date('j M Y h:i:s A', $start) . '</strong>'. PHP_EOL);
@@ -186,7 +192,11 @@ class Runner
      */
     protected function checkoutSourceCode(Build $build)
     {
+        $this->log('Checking out project source code...');
+
         $scm = ProviderFactory::createForProject($build->getProject());
+
+        $this->log('-- SCM: ' . $build->getProject()->getScm());
 
         if ($build->getForkUri()) {
             $scm->setRepository($build->getForkUri());
@@ -205,12 +215,13 @@ class Runner
      * Locates and parses the Yaml build script into an array and returns it.
      *
      * @throws \Exception
-     * @return array
+     * @return bool|array
      */
     protected function parseBuildScript()
     {
         if (!file_exists($this->workingDir . '/build.yml')) {
-            throw new \Exception('No build.yml file found');
+            $this->log('<strong>No <code>build.yml</code> file found in the root of the source code');
+            return false;
         }
 
         $yaml = new Yaml();
