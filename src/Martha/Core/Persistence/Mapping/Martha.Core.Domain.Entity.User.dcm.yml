@@ -13,6 +13,7 @@ Martha\Core\Domain\Entity\User:
       nullable: true
     email:
     password:
+      type: text
       nullable: true
     created:
       type: datetime
