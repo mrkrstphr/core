@@ -1,0 +1,18 @@
+Martha\Core\Domain\Entity\User:
+  type: entity
+  table: users
+  id:
+    id:
+      type: bigint
+      generator:
+        strategy: IDENTITY
+  fields:
+    fullName:
+      column: full_name
+      length: 100
+      nullable: true
+    email:
+    password:
+      nullable: true
+    created:
+      type: datetime
