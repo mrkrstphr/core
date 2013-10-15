@@ -16,7 +16,7 @@ class Artifact extends AbstractEntity
     /**
      * @var string
      */
-    protected $application;
+    protected $helper;
 
     /**
      * @var string
@@ -42,21 +42,21 @@ class Artifact extends AbstractEntity
     }
 
     /**
-     * @param string $application
+     * @param string $helper
      * @return $this
      */
-    public function setApplication($application)
+    public function setHelper($helper)
     {
-        $this->application = $application;
+        $this->helper = $helper;
         return $this;
     }
 
     /**
      * @return string
      */
-    public function getApplication()
+    public function getHelper()
     {
-        return $this->application;
+        return $this->helper;
     }
 
     /**

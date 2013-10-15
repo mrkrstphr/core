@@ -2,6 +2,7 @@
 
 namespace Martha\Core\Job;
 
+use Martha\Core\Domain\Entity\Artifact;
 use Martha\Core\Domain\Entity\Step;
 use Martha\Core\Domain\Repository\BuildRepositoryInterface;
 use Martha\Core\System;
@@ -130,6 +131,15 @@ class Runner
             'Build duration: <strong>' . $this->formatTime($duration) . '</strong>'
         );
 
+        foreach ($script['artifacts'] as $pluginHelper => $artifactFile) {
+            $artifactFile = $this->parseBuildScriptLine($artifactFile);
+            $artifact = new Artifact();
+            $artifact->setHelper($pluginHelper);
+            $artifact->setFile($artifactFile);
+
+            $build->getArtifacts()->add($artifact);
+        }
+
         $this->cleanupBuild();
 
         $wasSuccessful = true;
@@ -245,7 +255,7 @@ class Runner
      */
     protected function runCommand($command)
     {
-        $command = str_replace('${outputdir}', $this->outputDir, $command);
+        $command = $this->parseBuildScriptLine($command);
 
         $this->log("<strong>$ {$command}</strong>");
 
@@ -262,6 +272,17 @@ class Runner
         $return = proc_close($proc);
 
         return $return;
+    }
+
+    /**
+     *
+     *
+     * @param string $line
+     * @return string
+     */
+    protected function parseBuildScriptLine($line)
+    {
+        return str_replace('${outputdir}', $this->outputDir, $line);
     }
 
     /**
