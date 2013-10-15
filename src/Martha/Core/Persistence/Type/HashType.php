@@ -23,6 +23,7 @@ class HashType extends Type
             case 'postgresql':
                 return 'json';
                 break;
+            case 'mysql':
             case 'sqlite':
                 return 'text';
                 break;
