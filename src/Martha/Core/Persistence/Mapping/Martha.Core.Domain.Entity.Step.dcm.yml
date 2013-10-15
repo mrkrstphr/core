@@ -1,0 +1,21 @@
+Martha\Core\Domain\Entity\Step:
+  type: entity
+  table: steps
+  id:
+    id:
+      type: bigint
+      generator:
+        strategy: IDENTITY
+  fields:
+    command:
+      type: text
+    returnStatus:
+      column: return_status
+      type: integer
+      nullable: true
+  manyToOne:
+      build:
+        targetEntity: Martha\Core\Domain\Entity\Build
+        joinColumn:
+          name: build_id
+          referencedColumnName: id

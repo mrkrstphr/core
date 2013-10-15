@@ -2,6 +2,7 @@
 
 namespace Martha\Core\Job;
 
+use Martha\Core\Domain\Entity\Step;
 use Martha\Core\Domain\Repository\BuildRepositoryInterface;
 use Martha\Core\System;
 use Symfony\Component\Yaml\Yaml;
@@ -109,8 +110,14 @@ class Runner
         $status = [];
 
         foreach ($script['build'] as $commandIndex => $command) {
+            $step = new Step();
+            $step->setCommand($command);
+
             $return = $this->runCommand($command);
             $status[$commandIndex] = $return;
+            $step->setReturnStatus($return);
+
+            $build->getSteps()->add($step);
 
             $this->log(''); // force a newline after each command
         }

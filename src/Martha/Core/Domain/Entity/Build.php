@@ -82,11 +82,17 @@ class Build extends AbstractEntity
     protected $wasSuccessful;
 
     /**
+     * @var \Doctrine\Common\Collections\ArrayCollection
+     */
+    protected $steps;
+
+    /**
      * Set us up the class!
      */
     public function __construct()
     {
         $this->artifacts = new ArrayCollection();
+        $this->steps = new ArrayCollection();
     }
 
     /**
@@ -216,6 +222,14 @@ class Build extends AbstractEntity
     }
 
     /**
+     * @return boolean
+     */
+    public function getWasSuccessful()
+    {
+        return $this->getStatus() == self::STATUS_SUCCESS;
+    }
+
+    /**
      * @param \DateTime $date
      * @return $this
      */
@@ -252,20 +266,20 @@ class Build extends AbstractEntity
     }
 
     /**
-     * @param boolean $wasSuccessful
+     * @param \Doctrine\Common\Collections\ArrayCollection $steps
      * @return $this
      */
-    public function setWasSuccessful($wasSuccessful)
+    public function setSteps($steps)
     {
-        $this->wasSuccessful = $wasSuccessful;
+        $this->steps = $steps;
         return $this;
     }
 
     /**
-     * @return boolean
+     * @return \Doctrine\Common\Collections\ArrayCollection
      */
-    public function getWasSuccessful()
+    public function getSteps()
     {
-        return $this->wasSuccessful;
+        return $this->steps;
     }
 }
