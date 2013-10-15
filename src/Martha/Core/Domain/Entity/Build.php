@@ -4,6 +4,7 @@ namespace Martha\Core\Domain\Entity;
 
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
+use Martha\Core\Hash;
 
 /**
  * Class Build
@@ -72,6 +73,11 @@ class Build extends AbstractEntity
     protected $revisionNumber;
 
     /**
+     * @var Hash
+     */
+    protected $metadata;
+
+    /**
      * @var string
      */
     protected $status;
@@ -93,6 +99,7 @@ class Build extends AbstractEntity
     {
         $this->artifacts = new ArrayCollection();
         $this->steps = new ArrayCollection();
+        $this->metadata = new Hash();
     }
 
     /**
@@ -281,5 +288,23 @@ class Build extends AbstractEntity
     public function getSteps()
     {
         return $this->steps;
+    }
+
+    /**
+     * @param Hash $metadata
+     * @return $this
+     */
+    public function setMetadata($metadata)
+    {
+        $this->metadata = $metadata;
+        return $this;
+    }
+
+    /**
+     * @return Hash
+     */
+    public function getMetadata()
+    {
+        return $this->metadata;
     }
 }

@@ -23,6 +23,9 @@ Martha\Core\Domain\Entity\Build:
       column: revision_number
       length: 255
       nullable: true
+    metadata:
+      type: hash
+      nullable: true
     status:
       length: 40
     created:
