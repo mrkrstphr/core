@@ -32,6 +32,10 @@ Martha\Core\Domain\Entity\Build:
       targetEntity: Martha\Core\Domain\Entity\Step
       mappedBy: build
       cascade: ["persist"]
+    artifacts:
+      targetEntity: Martha\Core\Domain\Entity\Artifact
+      mappedBy: build
+      cascade: ["persist"]
   manyToOne:
       project:
         targetEntity: Martha\Core\Domain\Entity\Project

@@ -47,6 +47,11 @@ class Build extends AbstractEntity
     protected $artifacts;
 
     /**
+     * @var \Doctrine\Common\Collections\ArrayCollection
+     */
+    protected $steps;
+
+    /**
      * @var string
      */
     protected $branch;
@@ -80,11 +85,6 @@ class Build extends AbstractEntity
      * @var boolean
      */
     protected $wasSuccessful;
-
-    /**
-     * @var \Doctrine\Common\Collections\ArrayCollection
-     */
-    protected $steps;
 
     /**
      * Set us up the class!
