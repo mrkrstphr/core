@@ -61,6 +61,18 @@ class Hash
     }
 
     /**
+     * Remove a value stored at a given key.
+     *
+     * @param string $key
+     */
+    public function remove($key)
+    {
+        if ($this->has($key)) {
+            unset($this->data[$key]);
+        }
+    }
+
+    /**
      * Export the data as a JSON string.
      *
      * @return string
