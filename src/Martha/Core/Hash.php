@@ -54,22 +54,26 @@ class Hash
      *
      * @param string $key
      * @param mixed $value
+     * @return $this
      */
     public function set($key, $value)
     {
         $this->data[$key] = $value;
+        return $this;
     }
 
     /**
      * Remove a value stored at a given key.
      *
      * @param string $key
+     * @return $this
      */
     public function remove($key)
     {
         if ($this->has($key)) {
             unset($this->data[$key]);
         }
+        return $this;
     }
 
     /**
