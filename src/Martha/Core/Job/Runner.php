@@ -121,7 +121,7 @@ class Runner
 
             $build->getSteps()->add($step);
 
-            $this->log(''); // force a newline after each command
+            $this->log("\nCommand returned status [{$return}].\n");
         }
 
         $end = microtime(true);
@@ -221,11 +221,16 @@ class Runner
             $scm->setRepository($build->getForkUri());
         }
 
+        $this->log('-- Repository: ' . $scm->getRepository());
+
         $scm->cloneRepository($this->workingDir);
 
         if ($build->getRevisionNumber()) {
+            $this->log('-- Revno: ' . $build->getRevisionNumber());
             $scm->checkout($build->getRevisionNumber());
         }
+
+        $this->log(''); // force a newline
 
         return $this;
     }
