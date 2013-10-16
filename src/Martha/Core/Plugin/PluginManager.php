@@ -5,7 +5,6 @@ namespace Martha\Core\Plugin;
 use Martha\Core\Plugin\RemoteProjectProvider;
 use Martha\Core\Plugin\RemoteProjectProvider\AbstractRemoteProjectProvider;
 use Martha\Core\System;
-use Martha\Plugin\GitHub\Plugin;
 
 /**
  * Class PluginManager
@@ -22,6 +21,11 @@ class PluginManager
      * @var array
      */
     protected $remoteProjectProviders = [];
+
+    /**
+     * @var array
+     */
+    protected $artifactHandlers = [];
 
     /**
      * @var array
@@ -57,13 +61,26 @@ class PluginManager
     /**
      * Allows a plugin to register a RemoteProjectProvider.
      *
-     * @param Plugin $plugin
+     * @param AbstractPlugin $plugin
      * @param string $provider
      * @return $this
      */
-    public function registerRemoteProjectProvider(Plugin $plugin, $provider)
+    public function registerRemoteProjectProvider(AbstractPlugin $plugin, $provider)
     {
         $this->remoteProjectProviders[] = new $provider($plugin);
+        return $this;
+    }
+
+    /**
+     * Allows a plugin to register an ArtifactHandler.
+     *
+     * @param AbstractPlugin $plugin
+     * @param string $handler
+     * @return $this
+     */
+    public function registerArtifactHandler(AbstractPlugin $plugin, $handler)
+    {
+        $this->artifactHandlers[] = new $handler($plugin);
         return $this;
     }
 
@@ -150,9 +167,26 @@ class PluginManager
      */
     public function getRemoteProjectProvider($name)
     {
-        foreach ($this->remoteProjectProviders as $index => $provider) {
+        foreach ($this->remoteProjectProviders as $provider) {
             if ($provider->getProviderName() == $name) {
                 return $provider;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Get a specific ArtifactHandler by name.
+     *
+     * @param string $name
+     * @return bool|AbstractArtifactHandler
+     */
+    public function getArtifactHandler($name)
+    {
+        foreach ($this->artifactHandlers as $handler) {
+            if ($handler->getName() == $name) {
+                return $handler;
             }
         }
 
