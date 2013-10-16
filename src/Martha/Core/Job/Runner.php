@@ -112,6 +112,7 @@ class Runner
 
         foreach ($script['build'] as $commandIndex => $command) {
             $step = new Step();
+            $step->setBuild($build);
             $step->setCommand($command);
 
             $return = $this->runCommand($command);
@@ -134,6 +135,7 @@ class Runner
         foreach ($script['artifacts'] as $pluginHelper => $artifactFile) {
             $artifactFile = $this->parseBuildScriptLine($artifactFile);
             $artifact = new Artifact();
+            $artifact->setBuild($build);
             $artifact->setHelper($pluginHelper);
             $artifact->setFile($artifactFile);
 
