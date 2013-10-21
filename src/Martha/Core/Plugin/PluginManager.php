@@ -5,6 +5,7 @@ namespace Martha\Core\Plugin;
 use Martha\Core\Plugin\RemoteProjectProvider;
 use Martha\Core\Plugin\RemoteProjectProvider\AbstractRemoteProjectProvider;
 use Martha\Core\System;
+use Martha\Plugin\PhpCodeSniffer\Plugin;
 
 /**
  * Class PluginManager
@@ -31,6 +32,11 @@ class PluginManager
      * @var array
      */
     protected $routes = [];
+
+    /**
+     * @var array
+     */
+    protected $viewPaths = [];
 
     /**
      * @var System
@@ -129,6 +135,23 @@ class PluginManager
         }
 
         return false;
+    }
+
+    /**
+     * @param Plugin $plugin
+     * @param string $path
+     */
+    public function registerViewPath(Plugin $plugin, $path)
+    {
+        $this->viewPaths[$plugin->getName()][] = $path;
+    }
+
+    /**
+     * @return array
+     */
+    public function getRegisteredViewPaths()
+    {
+        return $this->viewPaths;
     }
 
     /**
