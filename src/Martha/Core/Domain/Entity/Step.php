@@ -19,6 +19,16 @@ class Step extends AbstractEntity
     protected $command;
 
     /**
+     * @var boolean
+     */
+    protected $stopOnFailure = false;
+
+    /**
+     * @var bool
+     */
+    protected $markBuildFailed = true;
+
+    /**
      * @var int
      */
     protected $returnStatus;
@@ -57,6 +67,42 @@ class Step extends AbstractEntity
     public function getCommand()
     {
         return $this->command;
+    }
+
+    /**
+     * @param boolean $stopOnFailure
+     * @return $this
+     */
+    public function setStopOnFailure($stopOnFailure)
+    {
+        $this->stopOnFailure = $stopOnFailure;
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getStopOnFailure()
+    {
+        return $this->stopOnFailure;
+    }
+
+    /**
+     * @param boolean $markBuildFailed
+     * @return $this
+     */
+    public function setMarkBuildFailed($markBuildFailed)
+    {
+        $this->markBuildFailed = $markBuildFailed;
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getMarkBuildFailed()
+    {
+        return $this->markBuildFailed;
     }
 
     /**
