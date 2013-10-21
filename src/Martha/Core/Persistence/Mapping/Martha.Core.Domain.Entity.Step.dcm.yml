@@ -9,6 +9,12 @@ Martha\Core\Domain\Entity\Step:
   fields:
     command:
       type: text
+    stopOnFailure:
+      type: boolean
+      column: stop_on_failure
+    markBuildFailed:
+      type: boolean
+      column: mark_build_failed
     returnStatus:
       column: return_status
       type: integer

@@ -93,6 +93,8 @@ class Runner
         $build->setStatus(Build::STATUS_BUILDING);
         $this->buildRepository->flush();
 
+        $this->system->getEventManager()->trigger('build.started', $build);
+
         $this->setupEnvironment($build);
         $this->checkoutSourceCode($build);
 
@@ -113,15 +115,34 @@ class Runner
         foreach ($script['build'] as $commandIndex => $command) {
             $step = new Step();
             $step->setBuild($build);
-            $step->setCommand($command);
+            $step->setCommand($command['command']);
 
-            $return = $this->runCommand($command);
-            $status[$commandIndex] = $return;
+            if ($command['stopOnFailure']) {
+                $step->setStopOnFailure($command['stopOnFailure']);
+            }
+
+            if ($command['markBuildFailed']) {
+                $step->setMarkBuildFailed($command['markBuildFailed']);
+            }
+
+            $return = $this->runCommand($step->getCommand());
+
+            if ($step->getMarkBuildFailed()) {
+                $status[$commandIndex] = $return;
+            }
+
             $step->setReturnStatus($return);
 
             $build->getSteps()->add($step);
 
             $this->log("\nCommand returned status [{$return}].\n");
+
+            if ($return != 0 && $step->getStopOnFailure()) {
+                $this->log('Build halting due to failure');
+                break;
+            }
+
+            $this->log(''); // force a newline after each command
         }
 
         $end = microtime(true);
