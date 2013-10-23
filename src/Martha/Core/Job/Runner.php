@@ -171,8 +171,6 @@ class Runner
             $wasSuccessful = $wasSuccessful && $stepStatus == 0;
         }
 
-        print_r($status);
-
         $build->setStatus($wasSuccessful ? Build::STATUS_SUCCESS : Build::STATUS_FAILURE);
         $this->buildRepository->flush();
 
