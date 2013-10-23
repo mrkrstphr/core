@@ -117,12 +117,12 @@ class Runner
             $step->setBuild($build);
             $step->setCommand($command['command']);
 
-            if ($command['stopOnFailure']) {
-                $step->setStopOnFailure($command['stopOnFailure']);
+            if (isset($command['stopOnFailure'])) {
+                $step->setStopOnFailure((bool)$command['stopOnFailure']);
             }
 
-            if ($command['markBuildFailed']) {
-                $step->setMarkBuildFailed($command['markBuildFailed']);
+            if (isset($command['markBuildFailed'])) {
+                $step->setMarkBuildFailed((bool)$command['markBuildFailed']);
             }
 
             $return = $this->runCommand($step->getCommand());
