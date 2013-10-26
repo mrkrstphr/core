@@ -23,10 +23,22 @@ Martha\Core\Domain\Entity\Build:
       column: revision_number
       length: 255
       nullable: true
+    metadata:
+      type: hash
+      nullable: true
     status:
       length: 40
     created:
       type: datetimetz
+  oneToMany:
+    steps:
+      targetEntity: Martha\Core\Domain\Entity\Step
+      mappedBy: build
+      cascade: ["persist"]
+    artifacts:
+      targetEntity: Martha\Core\Domain\Entity\Artifact
+      mappedBy: build
+      cascade: ["persist"]
   manyToOne:
       project:
         targetEntity: Martha\Core\Domain\Entity\Project

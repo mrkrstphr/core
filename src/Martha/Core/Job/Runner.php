@@ -2,6 +2,8 @@
 
 namespace Martha\Core\Job;
 
+use Martha\Core\Domain\Entity\Artifact;
+use Martha\Core\Domain\Entity\Step;
 use Martha\Core\Domain\Repository\BuildRepositoryInterface;
 use Martha\Core\System;
 use Symfony\Component\Yaml\Yaml;
@@ -91,6 +93,8 @@ class Runner
         $build->setStatus(Build::STATUS_BUILDING);
         $this->buildRepository->flush();
 
+        $this->system->getEventManager()->trigger('build.started', $build);
+
         $this->setupEnvironment($build);
         $this->checkoutSourceCode($build);
 
@@ -109,8 +113,34 @@ class Runner
         $status = [];
 
         foreach ($script['build'] as $commandIndex => $command) {
-            $return = $this->runCommand($command);
-            $status[$commandIndex] = $return;
+            $step = new Step();
+            $step->setBuild($build);
+            $step->setCommand($command['command']);
+
+            if (isset($command['stopOnFailure'])) {
+                $step->setStopOnFailure((bool)$command['stopOnFailure']);
+            }
+
+            if (isset($command['markBuildFailed'])) {
+                $step->setMarkBuildFailed((bool)$command['markBuildFailed']);
+            }
+
+            $return = $this->runCommand($step->getCommand());
+
+            if ($step->getMarkBuildFailed()) {
+                $status[$commandIndex] = $return;
+            }
+
+            $step->setReturnStatus($return);
+
+            $build->getSteps()->add($step);
+
+            $this->log("\nCommand returned status [{$return}].\n");
+
+            if ($return != 0 && $step->getStopOnFailure()) {
+                $this->log('Build halting due to failure');
+                break;
+            }
 
             $this->log(''); // force a newline after each command
         }
@@ -122,6 +152,16 @@ class Runner
             'Build completed at: <strong>' . date('j M Y h:i:s A', $end) . '</strong>' . PHP_EOL .
             'Build duration: <strong>' . $this->formatTime($duration) . '</strong>'
         );
+
+        foreach ($script['artifacts'] as $pluginHelper => $artifactFile) {
+            $artifactFile = $this->parseBuildScriptLine($artifactFile);
+            $artifact = new Artifact();
+            $artifact->setBuild($build);
+            $artifact->setHelper($pluginHelper);
+            $artifact->setFile($artifactFile);
+
+            $build->getArtifacts()->add($artifact);
+        }
 
         $this->cleanupBuild();
 
@@ -202,11 +242,16 @@ class Runner
             $scm->setRepository($build->getForkUri());
         }
 
+        $this->log('-- Repository: ' . $scm->getRepository());
+
         $scm->cloneRepository($this->workingDir);
 
         if ($build->getRevisionNumber()) {
+            $this->log('-- Revno: ' . $build->getRevisionNumber());
             $scm->checkout($build->getRevisionNumber());
         }
+
+        $this->log(''); // force a newline
 
         return $this;
     }
@@ -238,7 +283,7 @@ class Runner
      */
     protected function runCommand($command)
     {
-        $command = str_replace('${outputdir}', $this->outputDir, $command);
+        $command = $this->parseBuildScriptLine($command);
 
         $this->log("<strong>$ {$command}</strong>");
 
@@ -255,6 +300,17 @@ class Runner
         $return = proc_close($proc);
 
         return $return;
+    }
+
+    /**
+     *
+     *
+     * @param string $line
+     * @return string
+     */
+    protected function parseBuildScriptLine($line)
+    {
+        return str_replace('${outputdir}', $this->outputDir, $line);
     }
 
     /**

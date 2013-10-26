@@ -4,6 +4,7 @@ namespace Martha\Core\Domain\Entity;
 
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
+use Martha\Core\Hash;
 
 /**
  * Class Build
@@ -47,6 +48,11 @@ class Build extends AbstractEntity
     protected $artifacts;
 
     /**
+     * @var \Doctrine\Common\Collections\ArrayCollection
+     */
+    protected $steps;
+
+    /**
      * @var string
      */
     protected $branch;
@@ -72,6 +78,11 @@ class Build extends AbstractEntity
     protected $revisionNumber;
 
     /**
+     * @var Hash
+     */
+    protected $metadata;
+
+    /**
      * @var string
      */
     protected $status;
@@ -87,6 +98,8 @@ class Build extends AbstractEntity
     public function __construct()
     {
         $this->artifacts = new ArrayCollection();
+        $this->steps = new ArrayCollection();
+        $this->metadata = new Hash();
     }
 
     /**
@@ -216,6 +229,14 @@ class Build extends AbstractEntity
     }
 
     /**
+     * @return boolean
+     */
+    public function getWasSuccessful()
+    {
+        return $this->getStatus() == self::STATUS_SUCCESS;
+    }
+
+    /**
      * @param \DateTime $date
      * @return $this
      */
@@ -252,20 +273,38 @@ class Build extends AbstractEntity
     }
 
     /**
-     * @param boolean $wasSuccessful
+     * @param \Doctrine\Common\Collections\ArrayCollection $steps
      * @return $this
      */
-    public function setWasSuccessful($wasSuccessful)
+    public function setSteps($steps)
     {
-        $this->wasSuccessful = $wasSuccessful;
+        $this->steps = $steps;
         return $this;
     }
 
     /**
-     * @return boolean
+     * @return \Doctrine\Common\Collections\ArrayCollection
      */
-    public function getWasSuccessful()
+    public function getSteps()
     {
-        return $this->wasSuccessful;
+        return $this->steps;
+    }
+
+    /**
+     * @param Hash $metadata
+     * @return $this
+     */
+    public function setMetadata($metadata)
+    {
+        $this->metadata = $metadata;
+        return $this;
+    }
+
+    /**
+     * @return Hash
+     */
+    public function getMetadata()
+    {
+        return $this->metadata;
     }
 }

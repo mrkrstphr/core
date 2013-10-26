@@ -6,6 +6,9 @@ Martha\Core\Domain\Entity\Artifact:
       type: bigint
       generator:
         strategy: IDENTITY
+  fields:
+    helper:
+    file:
   manyToOne:
       build:
         targetEntity: Martha\Core\Domain\Entity\Build
