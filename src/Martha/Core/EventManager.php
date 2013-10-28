@@ -16,6 +16,7 @@ class EventManager
     /**
      * @param string $event
      * @param callable $callback
+     * @return $this
      */
     public function registerListener($event, callable $callback)
     {
@@ -26,6 +27,8 @@ class EventManager
         }
 
         $this->listeners[$event][] = $callback;
+
+        return $this;
     }
 
     /**
