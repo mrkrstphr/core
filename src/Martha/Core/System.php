@@ -59,11 +59,17 @@ class System
     /**
      * Load all of the plugins.
      *
+     * @todo clean this up. remove the reliance on plugin-path.
      * @param array $config
      */
     protected function loadPlugins(array $config)
     {
         $path = $config['plugin-path'];
+        $plugins = isset($config['plugins']) ? $config['plugins'] : [];
+
+        if (!$plugins) {
+            return;
+        }
 
         $files = [];
 
@@ -79,6 +85,10 @@ class System
             require_once $file;
 
             $pluginName = basename(dirname($file));
+
+            if (!in_array($pluginName, $plugins)) {
+                continue;
+            }
 
             $className = 'Martha\Plugin\\' . $pluginName . '\Plugin';
 
