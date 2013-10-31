@@ -80,6 +80,7 @@ class Runner
     /**
      * Kick off the build process and return whether the build was successful or not.
      *
+     * @todo Break out
      * @param int $buildId
      * @return bool
      */
@@ -163,7 +164,7 @@ class Runner
             $build->getArtifacts()->add($artifact);
         }
 
-        $this->cleanupBuild();
+        $this->cleanupBuild($build);
 
         $wasSuccessful = true;
 
@@ -175,6 +176,7 @@ class Runner
         $this->buildRepository->flush();
 
         $this->system->getEventManager()->trigger('build.complete', $build);
+        $this->system->getEventManager()->trigger('build.' . ($wasSuccessful ? 'success' : 'failure'), $build);
 
         return $wasSuccessful;
     }
@@ -204,6 +206,8 @@ class Runner
      */
     protected function setupEnvironment(Build $build)
     {
+        $this->system->getEventManager()->trigger('build.pre.environment', $build);
+
         $this->workingDir = $this->buildDirectory . '/' .
             $build->getProject()->getName() . '/' . $build->getId();
         $this->outputDir = $this->dataDirectory . '/' .
@@ -221,6 +225,8 @@ class Runner
 
         touch($this->outputFile);
 
+        $this->system->getEventManager()->trigger('build.post.environment', $build);
+
         return $this;
     }
 
@@ -232,6 +238,8 @@ class Runner
      */
     protected function checkoutSourceCode(Build $build)
     {
+        $this->system->getEventManager()->trigger('build.pre.source', $build);
+
         $this->log('Checking out project source code...');
 
         $scm = ProviderFactory::createForProject($build->getProject());
@@ -252,6 +260,8 @@ class Runner
         }
 
         $this->log(''); // force a newline
+
+        $this->system->getEventManager()->trigger('build.post.source', $build);
 
         return $this;
     }
@@ -316,12 +326,16 @@ class Runner
     /**
      * Cleans up after the build, removing unnecessary files, etc.
      */
-    protected function cleanupBuild()
+    protected function cleanupBuild(Build $build)
     {
+        $this->system->getEventManager()->trigger('build.pre.cleanup', $build);
+
         file_put_contents($this->outputFile, $this->colorizeOutput(file_get_contents($this->outputFile)));
 
         // empty out the build directory:
         exec('rm -rf ' . $this->workingDir);
+
+        $this->system->getEventManager()->trigger('build.post.cleanup', $build);
     }
 
     /**
