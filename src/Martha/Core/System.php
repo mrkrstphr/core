@@ -38,6 +38,11 @@ class System
     protected $repositoryFactory;
 
     /**
+     * @var string
+     */
+    protected $vendorDirectory;
+
+    /**
      * Set us up the Martha!
      *
      * @param EntityManager $em
@@ -126,6 +131,24 @@ class System
     public function getRepositoryFactory()
     {
         return $this->repositoryFactory;
+    }
+
+    /**
+     * @param string $vendorDirectory
+     * @return $this
+     */
+    public function setVendorDirectory($vendorDirectory)
+    {
+        $this->vendorDirectory = $vendorDirectory;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getVendorDirectory()
+    {
+        return $this->vendorDirectory;
     }
 
     /**
