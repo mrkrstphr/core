@@ -8,4 +8,10 @@ namespace Martha\Core\Domain\Repository;
  */
 interface BuildRepositoryInterface extends RepositoryInterface
 {
+    /**
+     * Restart a build.
+     *
+     * @param int $buildId
+     */
+    public function restartBuild($buildId);
 }
