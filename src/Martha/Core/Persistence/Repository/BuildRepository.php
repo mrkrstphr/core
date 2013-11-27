@@ -2,6 +2,8 @@
 
 namespace Martha\Core\Persistence\Repository;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Martha\Core\Domain\Entity\Build;
 use Martha\Core\Domain\Repository\BuildRepositoryInterface;
 
 /**
@@ -14,5 +16,18 @@ class BuildRepository extends AbstractRepository implements BuildRepositoryInter
      * @var string
      */
     protected $entityType = '\Martha\Core\Domain\Entity\Build';
-}
 
+    /**
+     * Restart a build.
+     *
+     * @param int $buildId
+     */
+    public function restartBuild($buildId)
+    {
+        $build = $this->getById($buildId);
+        $build->setStatus(Build::STATUS_PENDING);
+        $build->setSteps(new ArrayCollection());
+
+        $this->flush();
+    }
+}
