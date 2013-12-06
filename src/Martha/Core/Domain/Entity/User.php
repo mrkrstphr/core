@@ -2,6 +2,8 @@
 
 namespace Martha\Core\Domain\Entity;
 
+use DateTime;
+
 /**
  * Class User
  * @package Martha\Core\Domain\Entity
@@ -21,12 +23,30 @@ class User extends AbstractEntity
     /**
      * @var string
      */
+    protected $authService;
+
+    /**
+     * @var string
+     */
+    protected $accessToken;
+
+    /**
+     * @var string
+     */
     protected $password;
 
     /**
      * @var \DateTime
      */
     protected $created;
+
+    /**
+     * Set us up the entity!
+     */
+    public function __construct()
+    {
+        $this->created = new DateTime();
+    }
 
     /**
      * @param string $fullName
@@ -80,6 +100,42 @@ class User extends AbstractEntity
     public function getEmail()
     {
         return $this->email;
+    }
+
+    /**
+     * @param string $authService
+     * @return $this
+     */
+    public function setAuthService($authService)
+    {
+        $this->authService = $authService;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAuthService()
+    {
+        return $this->authService;
+    }
+
+    /**
+     * @param string $accessToken
+     * @return $this
+     */
+    public function setAccessToken($accessToken)
+    {
+        $this->accessToken = $accessToken;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAccessToken()
+    {
+        return $this->accessToken;
     }
 
     /**

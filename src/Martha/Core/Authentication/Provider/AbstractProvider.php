@@ -29,4 +29,12 @@ abstract class AbstractProvider
         $this->plugin = $plugin;
         $this->config = $config;
     }
+
+    /**
+     * @return array
+     */
+    public function getConfig()
+    {
+        return $this->config;
+    }
 }

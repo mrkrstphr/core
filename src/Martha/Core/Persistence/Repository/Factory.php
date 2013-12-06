@@ -7,6 +7,7 @@ use Martha\Core\Domain\Repository\ArtifactRepositoryInterface;
 use Martha\Core\Domain\Repository\BuildRepositoryInterface;
 use Martha\Core\Domain\Repository\FactoryInterface;
 use Martha\Core\Domain\Repository\ProjectRepositoryInterface;
+use Martha\Core\Domain\Repository\UserRepositoryInterface;
 
 /**
  * Class Factory
@@ -51,5 +52,13 @@ class Factory implements FactoryInterface
     public function createProjectRepository()
     {
         return new ProjectRepository($this->entityManager);
+    }
+
+    /**
+     * @return UserRepositoryInterface
+     */
+    public function createUserRepository()
+    {
+        return new UserRepository($this->entityManager);
     }
 }

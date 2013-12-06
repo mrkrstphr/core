@@ -27,7 +27,7 @@ abstract class AbstractOAuthProvider extends AbstractProvider
 
     /**
      * @param \Martha\Core\Http\Request $request
-     * @return boolean
+     * @return boolean|\Martha\Core\Domain\Entity\User
      */
     abstract public function validateResult(Request $request);
 }

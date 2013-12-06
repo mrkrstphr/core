@@ -15,5 +15,11 @@ Martha\Core\Domain\Entity\User:
     password:
       type: text
       nullable: true
+    authService:
+      column: auth_service
+      length: 100
+    accessToken:
+      column: access_token
+      nullable: true
     created:
       type: datetime
