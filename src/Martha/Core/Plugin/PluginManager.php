@@ -26,6 +26,11 @@ class PluginManager
     /**
      * @var array
      */
+    protected $authenticationProviders = [];
+
+    /**
+     * @var array
+     */
     protected $artifactHandlers = [];
 
     /**
@@ -75,6 +80,29 @@ class PluginManager
     {
         $this->remoteProjectProviders[] = new $provider($plugin);
         return $this;
+    }
+
+    /**
+     * Allows a plugin to provide authentication for the application through a AuthenticationProvider.
+     *
+     * @param AbstractPlugin $plugin
+     * @param string $provider
+     * @return $this
+     */
+    public function registerAuthenticationProvider(AbstractPlugin $plugin, $provider)
+    {
+        $this->authenticationProviders[] = new $provider($plugin, $plugin->getConfig());
+        return $this;
+    }
+
+    /**
+     * Retrieve the collection of authentication providers.
+     *
+     * @return array
+     */
+    public function getAuthenticationProviders()
+    {
+        return $this->authenticationProviders;
     }
 
     /**

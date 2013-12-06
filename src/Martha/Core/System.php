@@ -82,13 +82,13 @@ class System
         }
 
         foreach ($files as $file) {
-            require_once $file;
-
             $pluginName = basename(dirname($file));
 
-            if (!in_array($pluginName, $plugins)) {
+            if (!array_key_exists($pluginName, $plugins)) {
                 continue;
             }
+
+            require_once $file;
 
             $className = 'Martha\Plugin\\' . $pluginName . '\Plugin';
 
