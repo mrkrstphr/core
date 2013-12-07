@@ -47,6 +47,14 @@ class Factory implements FactoryInterface
     }
 
     /**
+     * @return BuildRepositoryInterface
+     */
+    public function createErrorRepository()
+    {
+        return new ErrorRepository($this->entityManager);
+    }
+
+    /**
      * @return ProjectRepositoryInterface
      */
     public function createProjectRepository()
