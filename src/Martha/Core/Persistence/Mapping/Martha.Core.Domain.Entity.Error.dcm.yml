@@ -1,0 +1,16 @@
+Martha\Core\Domain\Entity\Error:
+  type: entity
+  table: errors
+  id:
+    id:
+      type: bigint
+      generator:
+        strategy: IDENTITY
+  fields:
+    message:
+      type: text
+    wasRead:
+      column: was_read
+      type: boolean
+    created:
+      type: datetimetz
