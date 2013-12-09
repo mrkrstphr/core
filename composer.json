@@ -17,6 +17,6 @@
         "php": ">=5.4",
         "martha-ci/command": "dev-master",
         "martha-ci/scm": "dev-master",
-        "knplabs/github-api": "1.1.*"
+        "willdurand/hateoas": "2.0.*@dev"
     }
 }
