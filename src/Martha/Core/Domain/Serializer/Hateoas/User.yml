@@ -1,0 +1,7 @@
+Martha\Core\Domain\Entity\User:
+  relations:
+    -
+      rel: self
+      href: "expr('/users/' ~ object.getId())"
+      attributes:
+          type: application/json
