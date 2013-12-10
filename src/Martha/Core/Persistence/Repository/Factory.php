@@ -6,6 +6,7 @@ use Doctrine\ORM\EntityManager;
 use Martha\Core\Domain\Repository\ArtifactRepositoryInterface;
 use Martha\Core\Domain\Repository\BuildRepositoryInterface;
 use Martha\Core\Domain\Repository\FactoryInterface;
+use Martha\Core\Domain\Repository\PluginRepositoryInterface;
 use Martha\Core\Domain\Repository\ProjectRepositoryInterface;
 use Martha\Core\Domain\Repository\UserRepositoryInterface;
 
@@ -52,6 +53,14 @@ class Factory implements FactoryInterface
     public function createErrorRepository()
     {
         return new ErrorRepository($this->entityManager);
+    }
+
+    /**
+     * @return PluginRepositoryInterface
+     */
+    public function createPluginRepository()
+    {
+        return new PluginRepository($this->entityManager);
     }
 
     /**
