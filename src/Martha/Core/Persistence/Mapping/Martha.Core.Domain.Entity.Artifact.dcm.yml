@@ -12,6 +12,7 @@ Martha\Core\Domain\Entity\Artifact:
   manyToOne:
       build:
         targetEntity: Martha\Core\Domain\Entity\Build
+        inversedBy: artifacts
         joinColumn:
           name: build_id
           referencedColumnName: id

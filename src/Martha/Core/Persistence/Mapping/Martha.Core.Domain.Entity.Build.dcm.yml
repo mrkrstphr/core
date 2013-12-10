@@ -42,6 +42,7 @@ Martha\Core\Domain\Entity\Build:
   manyToOne:
       project:
         targetEntity: Martha\Core\Domain\Entity\Project
+        inversedBy: builds
         joinColumn:
           name: project_id
           referencedColumnName: id

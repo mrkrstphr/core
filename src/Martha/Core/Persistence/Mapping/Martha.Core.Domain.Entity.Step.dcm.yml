@@ -22,6 +22,7 @@ Martha\Core\Domain\Entity\Step:
   manyToOne:
       build:
         targetEntity: Martha\Core\Domain\Entity\Build
+        inversedBy: steps
         joinColumn:
           name: build_id
           referencedColumnName: id
