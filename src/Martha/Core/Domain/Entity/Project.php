@@ -132,4 +132,20 @@ class Project extends AbstractEntity
     {
         return $this->builds;
     }
+
+    /**
+     * @return \Martha\Core\Domain\Entity\Build
+     */
+    public function getMostRecentBuild()
+    {
+        $recent = null;
+
+        foreach ($this->getBuilds() as $build) {
+            if (is_null($recent) || $build->getCreated() > $recent->getCreated()) {
+                $recent = $build;
+            }
+        }
+
+        return $recent;
+    }
 }
